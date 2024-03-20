@@ -48,12 +48,8 @@ jobs:
     environment: production
 
     steps:
-      - env:
-        CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
-        run: echo "Current tag is $CURRENT_TAG"
       - name: Display current_tag
-        CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
-        run: echo "Current tag is $CURRENT_TAG"
+        run: echo "Current tag is ${{needs.deploy.outputs.current_tag}}"
 
       - name: Revert to previous production version
         uses: appleboy/ssh-action@master
@@ -67,7 +63,7 @@ jobs:
             set -e
             cd ${{ secrets.PROJECT_PATH }}
             git fetch --all --tags
-            git checkout $CURRENT_TAG
+            git checkout ${{needs.deploy.outputs.current_tag}}
             composer install --no-dev --optimize-autoloader
             php bin/console cache:clear --env=prod
             php bin/console doctrine:migrations:migrate --no-interaction --env=prod
