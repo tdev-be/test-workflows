@@ -8,13 +8,13 @@ on:
       - main
 
 jobs:
-  call-test_steps-in-local-repo:
+  call-tests:
     uses: ./.github/workflows/test_steps.yml
       
   deploy:
     name: Deploy to Server
     runs-on: ubuntu-latest
-    # needs: pre-deploy
+    needs: call-tests
     environment: production
 
     steps:
@@ -39,15 +39,20 @@ jobs:
             php bin/console assets:install
 
 # Définition de l'action de rollback en cas d'erreur dans le déploiement
-  # rollback:
-  #   name: Rollback on Deployment Failure
-  #   runs-on: ubuntu-latest
-  #   needs: deploy
-  #   if: failure()
+  rollback:
+    name: Rollback on Deployment Failure
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: failure()
 
-  #   steps:
-  #     - name: Revert to previous production version
-  #       run: |
-  #         cd ${{ secrets.PROJECT_PATH }}
-  #         git fetch --tags
-  #         git checkout ${{ steps.current_tag.outputs.current_tag }}
+    steps:
+      - name: Revert to previous production version
+        run: |
+          cd ${{ secrets.PROJECT_PATH }}
+          git fetch --tags
+          git checkout ${{ steps.current_tag.outputs.current_tag }}
+          composer install --no-dev --optimize-autoloader
+          php bin/console cache:clear --env=prod
+          php bin/console doctrine:migrations:migrate --no-interaction --env=prod
+          php bin/console assets:install
+
