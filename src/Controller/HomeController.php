@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     public function index(EntityManagerInterface $em): Response
     {
         $recipe = new Recipe();
-        $recipe->setName('yeah');
+        $recipe->setName(rand());
         $em->persist($recipe);
         $em->flush();
         $recipes = $em->getRepository(Recipe::class)->findAll();
