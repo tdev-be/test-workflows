@@ -1,13 +1,6 @@
 name: test workflow
 on:
   workflow_call:
-    inputs:
-      config-path:
-        required: true
-        type: string
-    secrets:
-      envPAT:
-        required: true
 jobs:
   test:
     name: Run Tests
@@ -16,6 +9,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader
+        run: composer install
       - name: Run PHPUnit tests
         run: php bin/phpunit

@@ -3,7 +3,9 @@ on:
   pull_request:
     types:
       - opened
+      - edited
+      - synchronize
 
 jobs:
-  call-test_steps-in-local-repo:
+  call-tests:
     uses: ./.github/workflows/test_steps.yml
