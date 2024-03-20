@@ -5,5 +5,5 @@ on:
       - opened
 
 jobs:
-  call-workflow-passing-data:
-    uses: test_steps.yml
+  call-workflow-in-local-repo:
+    uses: ./github/workflows/test_steps.yml
