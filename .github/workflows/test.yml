@@ -5,10 +5,5 @@ on:
       - opened
 
 jobs:
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    steps:
-      # Inclusion des étapes de test définies dans l'ancre 'test_steps'
-      <<: *test_steps
-   
+  call-workflow-passing-data:
+    uses: test_steps.yml

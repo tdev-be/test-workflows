@@ -1,8 +1,20 @@
-test_steps: &test_steps
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Install dependencies
-      run: composer install --no-dev --optimize-autoloader
-    - name: Run PHPUnit tests
-      run: php bin/phpunit
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+    secrets:
+      envPAT:
+        required: true
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+      - name: Run PHPUnit tests
+        run: php bin/phpunit
