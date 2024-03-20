@@ -51,6 +51,9 @@ jobs:
     environment: production
 
     steps:
+      - name: Display current_tag
+        run: echo "Current tag is $current_tag"
+
       - name: Revert to previous production version
         uses: appleboy/ssh-action@master
         with:
