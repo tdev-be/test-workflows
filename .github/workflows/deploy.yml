@@ -48,7 +48,13 @@ jobs:
 
     steps:
       - name: Revert to previous production version
-        run: |
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
           cd ${{ secrets.PROJECT_PATH }}
           git fetch --all --tags
           git checkout ${{ steps.current_tag.outputs.current_tag }}
