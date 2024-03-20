@@ -55,11 +55,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-          cd ${{ secrets.PROJECT_PATH }}
-          git fetch --all --tags
-          git checkout ${{ steps.current_tag.outputs.current_tag }}
-          composer install --no-dev --optimize-autoloader
-          php bin/console cache:clear --env=prod
-          php bin/console doctrine:migrations:migrate --no-interaction --env=prod
-          php bin/console assets:install
+            cd ${{ secrets.PROJECT_PATH }}
+            git fetch --all --tags
+            git checkout ${{ steps.current_tag.outputs.current_tag }}
+            composer install --no-dev --optimize-autoloader
+            php bin/console cache:clear --env=prod
+            php bin/console doctrine:migrations:migrate --no-interaction --env=prod
+            php bin/console assets:install
 
