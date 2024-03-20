@@ -50,11 +50,14 @@ jobs:
     steps:
       - env:
         CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
+        run: echo "Current tag is $CURRENT_TAG"
       - name: Display current_tag
+        CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
         run: echo "Current tag is $CURRENT_TAG"
 
       - name: Revert to previous production version
         uses: appleboy/ssh-action@master
+        CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
