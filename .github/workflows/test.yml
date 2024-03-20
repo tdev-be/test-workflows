@@ -6,4 +6,4 @@ on:
 
 jobs:
   call-test_steps-in-local-repo:
-    uses: ./.github/workflows/test_steps.yml@ref
+    uses: ./.github/workflows/test_steps.yml
