@@ -58,7 +58,7 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git fetch --all --tags
-            git checkout $current_tag
+            git checkout "$current_tag"
             composer install --no-dev --optimize-autoloader
             php bin/console cache:clear --env=prod
             php bin/console doctrine:migrations:migrate --no-interaction --env=prod
