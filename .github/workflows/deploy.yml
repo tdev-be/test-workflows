@@ -16,12 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: call-tests
     environment: production
-
+    outputs:
+      current_tag: ${{steps.current_tag.outputs.current_tag}}
     steps:
       - name: Get current tag
         id: current_tag
-        run: echo "current_tag=${{ github.ref }}" >> "$GITHUB_ENV"
-      
+        run: echo "current_tag=${{ github.ref }}" >> "$GITHUB_OUTPUT"      
       - name: Deploy over SSH
         uses: appleboy/ssh-action@master
         with:
@@ -48,8 +48,10 @@ jobs:
     environment: production
 
     steps:
+      -env:
+        CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
       - name: Display current_tag
-        run: echo "Current tag is $current_tag"
+        run: echo "Current tag is $CURRENT_TAG"
 
       - name: Revert to previous production version
         uses: appleboy/ssh-action@master
@@ -62,7 +64,7 @@ jobs:
             set -e
             cd ${{ secrets.PROJECT_PATH }}
             git fetch --all --tags
-            git checkout "$current_tag"
+            git checkout $CURRENT_TAG
             composer install --no-dev --optimize-autoloader
             php bin/console cache:clear --env=prod
             php bin/console doctrine:migrations:migrate --no-interaction --env=prod
