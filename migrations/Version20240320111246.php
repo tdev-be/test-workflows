@@ -20,7 +20,7 @@ final class Version20240320111246 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        //throw new \Exception('need to rollback');
+        throw new \Exception('need to rollback');
     }
 
     public function down(Schema $schema): void
