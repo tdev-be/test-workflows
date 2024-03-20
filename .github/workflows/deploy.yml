@@ -30,6 +30,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            set -e
             cd ${{ secrets.PROJECT_PATH }}
             git fetch --all --tags
             git checkout ${{ github.ref }}
@@ -49,7 +50,7 @@ jobs:
       - name: Revert to previous production version
         run: |
           cd ${{ secrets.PROJECT_PATH }}
-          git fetch --tags
+          git fetch --all --tags
           git checkout ${{ steps.current_tag.outputs.current_tag }}
           composer install --no-dev --optimize-autoloader
           php bin/console cache:clear --env=prod
