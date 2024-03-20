@@ -33,7 +33,6 @@ jobs:
           script: |
             set -e
             cd ${{ secrets.PROJECT_PATH }}
-            echo "current_tag=$(git describe --tags)" >> "$GITHUB_OUTPUT"
             echo $(git describe --tags) >> test_qta.txt
             git fetch --all --tags
             git checkout ${{ github.ref }}
@@ -65,7 +64,7 @@ jobs:
             set -e
             cd ${{ secrets.PROJECT_PATH }}
             git fetch --all --tags
-            git checkout ${{needs.deploy.outputs.current_tag}}
+            git checkout $(cat test_qta.txt)
             composer install --no-dev --optimize-autoloader
             php bin/console cache:clear --env=prod
             php bin/console doctrine:migrations:migrate --no-interaction --env=prod
