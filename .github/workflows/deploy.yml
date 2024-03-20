@@ -53,7 +53,6 @@ jobs:
 
       - name: Revert to previous production version
         uses: appleboy/ssh-action@master
-        CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
