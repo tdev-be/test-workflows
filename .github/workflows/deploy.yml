@@ -17,12 +17,13 @@ jobs:
   #  needs: call-tests
     environment: production
     outputs:
-      current_tag: ${{steps.current_tag.outputs.current_tag}}
+      current_tag: ${{steps.real_deploy.outputs.current_tag}}
     steps:
       - name: Get current tag
         id: current_tag
         run: echo "current_tag=$(git describe --tags)" >> "$GITHUB_OUTPUT"      
       - name: Deploy over SSH
+        id: real_deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.SSH_HOST }}
@@ -32,6 +33,8 @@ jobs:
           script: |
             set -e
             cd ${{ secrets.PROJECT_PATH }}
+            echo "current_tag=$(git describe --tags)" >> "$GITHUB_OUTPUT"
+            echo $(git describe --tags) >> test_qta.txt
             git fetch --all --tags
             git checkout ${{ github.ref }}
             composer install --no-dev --optimize-autoloader
