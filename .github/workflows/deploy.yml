@@ -48,7 +48,7 @@ jobs:
     environment: production
 
     steps:
-      -env:
+      - env:
         CURRENT_TAG: ${{needs.deploy.outputs.current_tag}}
       - name: Display current_tag
         run: echo "Current tag is $CURRENT_TAG"
