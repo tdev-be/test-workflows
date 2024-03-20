@@ -5,5 +5,5 @@ on:
       - opened
 
 jobs:
-  call-workflow-in-local-repo:
-    uses: ./github/workflows/test_steps.yml
+  call-test_steps-in-local-repo:
+    uses: ./.github/workflows/test_steps.yml
