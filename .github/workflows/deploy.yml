@@ -22,9 +22,6 @@ jobs:
         id: current_tag
         run: echo "current_tag=${{ github.ref }}" >> "$GITHUB_ENV"
       
-      - name: Display current_tag
-        run: echo "Current tag is $current_tag"
-
       - name: Deploy over SSH
         uses: appleboy/ssh-action@master
         with:
