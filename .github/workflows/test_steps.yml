@@ -1,0 +1,8 @@
+test_steps: &test_steps
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install dependencies
+      run: composer install --no-dev --optimize-autoloader
+    - name: Run PHPUnit tests
+      run: php bin/phpunit

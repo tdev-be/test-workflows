@@ -12,26 +12,13 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-  pre-deploy:
-    name: Pre-Deploy Checks
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Perform pre-deployment checks
-        run: |
-          # Insérez ici vos vérifications pré-déploiement, comme des tests d'intégration, des analyses de code, etc.
-
+      # Inclusion des étapes de test définies dans l'ancre 'test_steps'
+      <<: *test_steps
+      
   deploy:
     name: Deploy to Server
     runs-on: ubuntu-latest
-    needs: pre-deploy
+    # needs: pre-deploy
     environment: production
 
     steps:
@@ -56,15 +43,15 @@ jobs:
             php bin/console assets:install
 
 # Définition de l'action de rollback en cas d'erreur dans le déploiement
-  rollback:
-    name: Rollback on Deployment Failure
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: failure()
+  # rollback:
+  #   name: Rollback on Deployment Failure
+  #   runs-on: ubuntu-latest
+  #   needs: deploy
+  #   if: failure()
 
-    steps:
-      - name: Revert to previous production version
-        run: |
-          cd ${{ secrets.PROJECT_PATH }}
-          git fetch --tags
-          git checkout ${{ steps.current_tag.outputs.current_tag }}
+  #   steps:
+  #     - name: Revert to previous production version
+  #       run: |
+  #         cd ${{ secrets.PROJECT_PATH }}
+  #         git fetch --tags
+  #         git checkout ${{ steps.current_tag.outputs.current_tag }}
