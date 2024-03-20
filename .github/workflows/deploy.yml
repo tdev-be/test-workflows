@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Get current tag
         id: current_tag
-        run: echo "current_tag=${{ github.ref }}" >> "$GITHUB_OUTPUT"      
+        run: echo "current_tag=$(git describe --tags)" >> "$GITHUB_OUTPUT"      
       - name: Deploy over SSH
         uses: appleboy/ssh-action@master
         with:
